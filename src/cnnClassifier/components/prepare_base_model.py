@@ -10,6 +10,7 @@ class PrepareBaseModel:
 
     def __init__(self, config: PrepareBaseModelConfig):
         self.config = config
+        self.model = None  # Initialize model to None before loading it
 
     def get_base_model(self):
         self.model = tf.keras.applications.vgg16.VGG16(
@@ -26,10 +27,10 @@ class PrepareBaseModel:
         # freezing trainable parameters , we don't want to train it from scratch
         if freeze_all:
             for layer in model.layers:
-                model.trainable = False
+                layer.trainable = False
         elif (freeze_till is not None) and (freeze_till > 0):
             for layer in model.kayers[: freeze_till]:
-                model.trainable = False
+                layer.trainable = False
 
         flatten_in = tf.keras.layers.Flatten()(model.output)
 
@@ -42,6 +43,10 @@ class PrepareBaseModel:
             inputs = model.input,
             outputs = prediction
         )
+        # full_model =tf.keras.models.Sequential([
+        #     flatten_in,
+        #     prediction
+        # ])
 
         full_model.compile(
             optimizer = tf.keras.optimizers.SGD(learning_rate=learning_rate),
