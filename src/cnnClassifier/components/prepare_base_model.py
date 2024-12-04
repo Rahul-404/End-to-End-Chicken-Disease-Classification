@@ -10,7 +10,7 @@ class PrepareBaseModel:
 
     def __init__(self, config: PrepareBaseModelConfig):
         self.config = config
-        self.model = None  # Initialize model to None before loading it
+        self.full_model = None  # Initialize model to None before loading it
 
     def get_base_model(self):
         self.model = tf.keras.applications.vgg16.VGG16(
@@ -43,16 +43,12 @@ class PrepareBaseModel:
             inputs = model.input,
             outputs = prediction
         )
-        # full_model =tf.keras.models.Sequential([
-        #     flatten_in,
-        #     prediction
-        # ])
 
-        full_model.compile(
-            optimizer = tf.keras.optimizers.SGD(learning_rate=learning_rate),
-            loss = tf.keras.losses.CategoricalCrossentropy(),
-            metrics = ["accuracy"]
-        )
+        # full_model.compile(
+        #     optimizer = tf.keras.optimizers.SGD(learning_rate=learning_rate),
+        #     loss = tf.keras.losses.CategoricalCrossentropy(),
+        #     metrics = ["accuracy"]
+        # )
 
         full_model.summary()
 
