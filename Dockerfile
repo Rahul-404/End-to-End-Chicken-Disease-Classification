@@ -1,6 +1,6 @@
 FROM python:3.9-slim-buster
 
-RUN apt upadte -y && install awscli -y
+RUN apt upadte -y && apt install awscli -y
 
 WORKDIR /app
 
